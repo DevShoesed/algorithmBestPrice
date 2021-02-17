@@ -16,4 +16,9 @@ class Flight
         $this->code_arrival = $code_arrival;
         $this->price = $price;
     }
+
+    public function __toString(): string
+    {
+        return "FROM: $this->code_departure TO: $this->code_arrival PRICE: $this->price";
+    }
 }

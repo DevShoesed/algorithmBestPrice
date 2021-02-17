@@ -18,4 +18,9 @@ class Airport
         $this->lat = $lat;
         $this->lng = $lng;
     }
+
+    public function __toString(): string
+    {
+        return "$this->id - $this->name - $this->code ";
+    }
 }

@@ -22,11 +22,13 @@ $airportTable->setData([
 ]);
 
 /* Set Flights Repository */
-
 $flightTable = new FlightRepository();
 $flightTable->setData([
     new Flight("NAP", "FCO", 100),
-    new Flight("FCO", "PMO", 100),
+    new Flight("FCO", "PMO", 150),
     new Flight("PMO", "MXP", 200),
     new Flight("NAP", "MXP", 500)
 ]);
+
+/* Instance of Solution for find best price */
+$solution = new SolutionA($airportTable, $flightTable);

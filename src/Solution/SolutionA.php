@@ -23,11 +23,11 @@ class SolutionA
     /**
      * @param String $code_departure
      * @param String $code_arrival
-     * @param Inte
+     * @param Integer $maxStop
      */
-    public function getBestPrice(string $code_departure, string $code_arrival, int $maxStop): float
+    public function getBestPrice(string $code_departure, string $code_arrival, int $maxStop): array
     {
-        /* Set Price to Infinite for All arrival */
+        /* Set Price to Infinite for All airports */
         foreach ($this->airportTable->all() as $arrival) {
             if ($code_departure !== $arrival->code) {
                 $this->bestPrice[$code_departure][$arrival->code] = [
@@ -37,28 +37,31 @@ class SolutionA
             }
         }
 
+        /* Search First destination from Departure Airport  */
         $firstDestination = $this->flightTable->findByDeparture($code_departure);
 
         foreach ($firstDestination as $flight) {
-            /* If price from  */
             if ($flight->price < $this->getPrice($code_departure, $flight->code_arrival)) {
                 $this->bestPrice[$code_departure][$flight->code_arrival]["price"] = $flight->price;
                 $this->bestPrice[$code_departure][$flight->code_arrival]["stops"] = 1;
             }
         }
 
-        foreach ($this->bestPrice[$code_departure] as $codeFirstArrival => $flight) {
-            $secodDestination = $this->flightTable->findByDeparture($codeFirstArrival);
-            $firstPrice = $this->getPrice($code_departure, $codeFirstArrival);
-            foreach ($secodDestination as $secondFlight) {
-                if ($secondFlight->price < $this->getPrice($code_departure, $secondFlight->code_arrival)) {
-                    $this->bestPrice[$code_departure][$secondFlight->code_arrival]["price"] = $firstPrice + $secondFlight->price;
-                    $this->bestPrice[$code_departure][$secondFlight->code_arrival]["stops"] = 2;
+        for ($i = 2; $i <= $maxStop; $i++) {
+            foreach ($this->bestPrice[$code_departure] as $codeSecondDeparture => $flight) {
+                $secodDestination = $this->flightTable->findByDeparture($codeSecondDeparture);
+
+                $firstPrice = $flight["price"];
+                foreach ($secodDestination as $secondFlight) {
+                    if ($secondFlight->price < $this->getPrice($code_departure, $secondFlight->code_arrival)) {
+                        $this->bestPrice[$code_departure][$secondFlight->code_arrival]["price"] = $firstPrice + $secondFlight->price;
+                        $this->bestPrice[$code_departure][$secondFlight->code_arrival]["stops"] += 1;
+                    }
                 }
             }
         }
 
-        return $this->getPrice($code_departure, $code_arrival);
+        return $this->bestPrice[$code_departure][$code_arrival];
     }
 
     /**

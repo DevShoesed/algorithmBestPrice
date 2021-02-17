@@ -26,7 +26,7 @@ class FlightRepository
     /**
      * Return Example Data
      */
-    private function getData(): array
+    public function getData(): array
     {
         return $this->data;
     }
