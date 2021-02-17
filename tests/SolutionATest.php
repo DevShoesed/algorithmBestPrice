@@ -14,6 +14,7 @@ final class SolutionATest extends TestCase
 {
 
 
+
     /**
      * Test best Price
      */
