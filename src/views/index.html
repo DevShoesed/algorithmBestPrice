@@ -15,7 +15,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>Welcome!</h1>
+      <h1>Search a best price</h1>
 
       <div class="row">
         <div class="col">
@@ -23,7 +23,7 @@
         </div>
         <div class="col">
           <form class="row g-3 needs-validation" id="formBestPrice" novalidate>
-            <div class="col-md-5 mb-3">
+            <div class="col-md-6 mb-3">
               <label for="code_departure" class="form-label">Departure</label>
               <input
                 type="text"
@@ -35,7 +35,7 @@
               />
               <div class="invalid-feedback">Please choose a Departure.</div>
             </div>
-            <div class="col-md-5 mb-3">
+            <div class="col-md-6 mb-3">
               <label for="code_arrival" class="form-label">Arrival</label>
               <input
                 type="text"
@@ -48,7 +48,7 @@
               <div class="invalid-feedback">Please choose a Arrival.</div>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-12 mb-3">
               <label for="max_stopover" class="form-label">Stop</label>
               <select
                 class="custom-select"
@@ -90,6 +90,7 @@
 
     <script>
       $(function () {
+        /* Get All Airports*/
         fetch("/airport")
           .then((response) => {
             return response.json();
