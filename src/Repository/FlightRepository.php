@@ -16,7 +16,7 @@ class FlightRepository
      */
     public function findByDeparture(string $code_departure): array
     {
-        $flightsFound = array_filter($this->getData(), function ($flight) use (&$code_departure) {
+        $flightsFound = array_filter($this->all(), function ($flight) use (&$code_departure) {
             return $flight->code_departure == $code_departure;
         });
 
@@ -26,7 +26,7 @@ class FlightRepository
     /**
      * Return Example Data
      */
-    public function getData(): array
+    public function all(): array
     {
         return $this->data;
     }

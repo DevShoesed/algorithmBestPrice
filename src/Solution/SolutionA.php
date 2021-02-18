@@ -50,7 +50,7 @@ class SolutionA
             foreach ($this->bestPrice[$code_departure] as $codeSecondDeparture => $firstFlight) {
                 $firstPrice = $firstFlight["price"];
 
-                /* If doesn't have flight to second Departure, skip search coincidences */
+                /* if there are no previous flights, skip search coincidences */
                 if ($firstFlight["stops"] == 0) {
                     continue;
                 }
