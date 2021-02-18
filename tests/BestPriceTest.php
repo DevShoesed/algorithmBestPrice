@@ -6,11 +6,11 @@ use App\Model\Airport;
 use App\Model\Flight;
 use App\Repository\AirportRepository;
 use App\Repository\FlightRepository;
-use App\Solution\SolutionA;
+use App\Solution\BestPrice;
 use PHPUnit\Framework\TestCase;
 
 
-final class SolutionATest extends TestCase
+final class BestPriceTest extends TestCase
 {
 
     private $airportTable;
@@ -21,7 +21,7 @@ final class SolutionATest extends TestCase
      */
     public function testBestPriceTwoStops(): void
     {
-        $solution = new SolutionA($this->airportTable, $this->flightTable);
+        $solution = new BestPrice($this->airportTable, $this->flightTable);
 
         $bestPrice = $solution->getBestPrice("NAP", "MXP", 2);
         $this->assertEquals(
@@ -40,7 +40,7 @@ final class SolutionATest extends TestCase
      */
     public function testBestPriceOneStop(): void
     {
-        $solution = new SolutionA($this->airportTable, $this->flightTable);
+        $solution = new BestPrice($this->airportTable, $this->flightTable);
 
         $bestPrice = $solution->getBestPrice("NAP", "MXP", 1);
 
@@ -60,7 +60,7 @@ final class SolutionATest extends TestCase
      */
     public function testBestPriceNotFound(): void
     {
-        $solution = new SolutionA($this->airportTable, $this->flightTable);
+        $solution = new BestPrice($this->airportTable, $this->flightTable);
         $bestPrice = $solution->getBestPrice("FCO", "VCE", 1);
 
         $this->assertEquals(

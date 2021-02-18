@@ -8,7 +8,7 @@ use App\Model\Flight;
 use App\Model\Airport;
 use App\Repository\AirportRepository;
 use App\Repository\FlightRepository;
-use App\Solution\SolutionA;
+use App\Solution\BestPrice;
 
 function csvToAirport($row): Airport
 {
@@ -50,7 +50,7 @@ switch ($request) {
         $code_arrival = $input->code_arrival;
         $max_stop = (int) $input->max_stop;
 
-        $solution = new SolutionA($airportTable, $flightTable);
+        $solution = new BestPrice($airportTable, $flightTable);
         $bestPrice = $solution->getBestPrice($code_departure, $code_arrival, $max_stop);
 
         if ($bestPrice["stops"] > 0) {

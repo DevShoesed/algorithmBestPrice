@@ -7,7 +7,7 @@ namespace App\Solution;
 use App\Repository\AirportRepository;
 use App\Repository\FlightRepository;
 
-class SolutionA
+class BestPrice
 {
     private $airportTable;
     private $flightTable;
