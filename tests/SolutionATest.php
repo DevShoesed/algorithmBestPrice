@@ -13,16 +13,74 @@ use PHPUnit\Framework\TestCase;
 final class SolutionATest extends TestCase
 {
 
-
+    private $airportTable;
+    private $flightTable;
 
     /**
-     * Test best Price
+     * Test best Price for max 2 Stops
      */
-    public function testBestPrice(): void
+    public function testBestPriceTwoStops(): void
     {
+        $solution = new SolutionA($this->airportTable, $this->flightTable);
+
+        $bestPrice = $solution->getBestPrice("NAP", "MXP", 2);
+        $this->assertEquals(
+            250,
+            $bestPrice["price"]
+        );
+
+        $this->assertLessThanOrEqual(
+            2,
+            $bestPrice["stops"]
+        );
+    }
+
+    /**
+     * Test best Price for max 1 Stops
+     */
+    public function testBestPriceOneStop(): void
+    {
+        $solution = new SolutionA($this->airportTable, $this->flightTable);
+
+        $bestPrice = $solution->getBestPrice("NAP", "MXP", 1);
+
+        $this->assertEquals(
+            500,
+            $bestPrice["price"]
+        );
+
+        $this->assertEquals(
+            1,
+            $bestPrice["stops"]
+        );
+    }
+
+    /**
+     * Test best price Not Found
+     */
+    public function testBestPriceNotFound(): void
+    {
+        $solution = new SolutionA($this->airportTable, $this->flightTable);
+        $bestPrice = $solution->getBestPrice("FCO", "VCE", 1);
+
+        $this->assertEquals(
+            INF,
+            $bestPrice["price"]
+        );
+        $this->assertEquals(
+            0,
+            $bestPrice["stops"]
+        );
+    }
+
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
         /* Set Airport Repository */
-        $airportTable = new AirportRepository();
-        $airportTable->setData([
+        $this->airportTable = new AirportRepository();
+        $this->airportTable->setData([
             new Airport(1, "Roma Fiumicino", "FCO", 0, 0),
             new Airport(2, "Milano Malpensa", "MXP", 0, 0),
             new Airport(3, "Napoli", "NAP", 0, 0),
@@ -31,24 +89,20 @@ final class SolutionATest extends TestCase
         ]);
 
         /* Set Flights Repository */
-        $flightTable = new FlightRepository();
-        $flightTable->setData([
+        $this->flightTable = new FlightRepository();
+        $this->flightTable->setData([
             new Flight("NAP", "FCO", 100),
             new Flight("FCO", "MXP", 150),
             new Flight("MXP", "VCE", 250),
             new Flight("NAP", "MXP", 500),
             new Flight("NAP", "VCE", 250)
         ]);
+    }
 
-        $test = new SolutionA($airportTable, $flightTable);
-        $this->assertEquals(
-            250,
-            $test->getBestPrice("NAP", "MXP", 2)["price"]
-        );
-
-        $this->assertEquals(
-            250,
-            $test->getBestPrice("NAP", "VCE", 2)["price"]
-        );
+    protected function tearDown(): void
+    {
+        $this->airportTable = null;
+        $this->flightTable = null;
+        parent::tearDown();
     }
 }

@@ -6,7 +6,6 @@ namespace App\Solution;
 
 use App\Repository\AirportRepository;
 use App\Repository\FlightRepository;
-use SebastianBergmann\Type\VoidType;
 
 class SolutionA
 {
@@ -39,7 +38,6 @@ class SolutionA
 
         /* Search First destination from Departure Airport  */
         $firstDestination = $this->flightTable->findByDeparture($code_departure);
-
         foreach ($firstDestination as $flight) {
             if ($flight->price < $this->getPrice($code_departure, $flight->code_arrival)) {
                 $this->bestPrice[$code_departure][$flight->code_arrival]["price"] = $flight->price;
@@ -47,11 +45,18 @@ class SolutionA
             }
         }
 
+        /* Search other destination */
         for ($i = 2; $i <= $maxStop; $i++) {
-            foreach ($this->bestPrice[$code_departure] as $codeSecondDeparture => $flight) {
-                $secodDestination = $this->flightTable->findByDeparture($codeSecondDeparture);
+            foreach ($this->bestPrice[$code_departure] as $codeSecondDeparture => $firstFlight) {
+                $firstPrice = $firstFlight["price"];
 
-                $firstPrice = $flight["price"];
+                /* If doesn't have flight to second Departure, skip search coincidences */
+                if ($firstFlight["stops"] == 0) {
+                    continue;
+                }
+
+                /* Search all flights from second departure*/
+                $secodDestination = $this->flightTable->findByDeparture($codeSecondDeparture);
                 foreach ($secodDestination as $secondFlight) {
                     if ($secondFlight->price < $this->getPrice($code_departure, $secondFlight->code_arrival)) {
                         $this->bestPrice[$code_departure][$secondFlight->code_arrival]["price"] = $firstPrice + $secondFlight->price;
