@@ -49,6 +49,7 @@ class SolutionA
         for ($i = 2; $i <= $maxStop; $i++) {
             foreach ($this->bestPrice[$code_departure] as $codeSecondDeparture => $firstFlight) {
                 $firstPrice = $firstFlight["price"];
+                $firstStops = $firstFlight["stops"];
 
                 /* if there are no previous flights, skip search coincidences */
                 if ($firstFlight["stops"] == 0) {
@@ -60,7 +61,7 @@ class SolutionA
                 foreach ($secodDestination as $secondFlight) {
                     if ($secondFlight->price < $this->getPrice($code_departure, $secondFlight->code_arrival)) {
                         $this->bestPrice[$code_departure][$secondFlight->code_arrival]["price"] = $firstPrice + $secondFlight->price;
-                        $this->bestPrice[$code_departure][$secondFlight->code_arrival]["stops"] += 1;
+                        $this->bestPrice[$code_departure][$secondFlight->code_arrival]["stops"] = $firstStops + 1;
                     }
                 }
             }
