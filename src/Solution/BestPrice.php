@@ -59,6 +59,12 @@ class BestPrice
                 /* Search all flights from second departure*/
                 $secodDestination = $this->flightTable->findByDeparture($codeSecondDeparture);
                 foreach ($secodDestination as $secondFlight) {
+
+                    /* exclude return flights */
+                    if ($code_departure == $secondFlight->code_arrival) {
+                        continue;
+                    }
+
                     if ($secondFlight->price < $this->getPrice($code_departure, $secondFlight->code_arrival)) {
                         $this->bestPrice[$code_departure][$secondFlight->code_arrival]["price"] = $firstPrice + $secondFlight->price;
                         $this->bestPrice[$code_departure][$secondFlight->code_arrival]["stops"] = $firstStops + 1;
