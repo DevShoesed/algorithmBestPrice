@@ -50,14 +50,20 @@ switch ($request) {
         $code_arrival = strtoupper($input->code_arrival);
         $max_stop = (int) $input->max_stop;
 
-        $solution = new BestPrice($airportTable, $flightTable);
-        $bestPrice = $solution->getBestPrice($code_departure, $code_arrival, $max_stop);
 
-        if ($bestPrice["stops"] > 0) {
-            http_response_code(200);
-            echo json_encode($bestPrice);
-            break;
+        try {
+            $solution = new BestPrice($airportTable, $flightTable);
+            $bestPrice = $solution->getBestPrice($code_departure, $code_arrival, $max_stop);
+
+            if ($bestPrice["stops"] > 0) {
+                http_response_code(200);
+                echo json_encode($bestPrice);
+                break;
+            }
+        } catch (\Throwable $th) {
+            error_log($th->getMessage());
         }
+
         http_response_code(404);
         echo json_encode([
             "error" => "No flight from $code_departure To $code_arrival"
