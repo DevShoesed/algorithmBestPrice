@@ -65,8 +65,9 @@ class BestPrice
                         continue;
                     }
 
-                    if ($secondFlight->price < $this->getPrice($code_departure, $secondFlight->code_arrival)) {
-                        $this->bestPrice[$code_departure][$secondFlight->code_arrival]["price"] = $firstPrice + $secondFlight->price;
+                    $newPrice = $firstPrice + $secondFlight->price;
+                    if ($newPrice < $this->getPrice($code_departure, $secondFlight->code_arrival)) {
+                        $this->bestPrice[$code_departure][$secondFlight->code_arrival]["price"] = $newPrice;
                         $this->bestPrice[$code_departure][$secondFlight->code_arrival]["stops"] = $firstStops + 1;
                     }
                 }
