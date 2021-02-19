@@ -46,8 +46,8 @@ switch ($request) {
         break;
     case "/getBestPrice":
         $input = json_decode(file_get_contents('php://input'));
-        $code_departure = $input->code_departure;
-        $code_arrival = $input->code_arrival;
+        $code_departure = strtoupper($input->code_departure);
+        $code_arrival = strtoupper($input->code_arrival);
         $max_stop = (int) $input->max_stop;
 
         $solution = new BestPrice($airportTable, $flightTable);
